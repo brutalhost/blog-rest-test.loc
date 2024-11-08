@@ -1,7 +1,6 @@
 {% set posts = __SELF__.posts %}
 
 
-
 <div class="card-container">
     {% for post in posts %}
 
@@ -20,9 +19,9 @@
                 </a>
 
                 <div class="card-blogger">
-                    <h4 class="card-blogger__date">20 July 2019</h4>
-                    <h3 class="card-blogger__name">Cayla Brister</h3>
-                    <img class="card-blogger__image" src="img/cardbloggerimgedit.png" alt="">
+                    <h4 class="card-blogger__date">{{ post.published_at | date('j F Y') }}</h4>
+                    <h3 class="card-blogger__name">{{ post.user.getFullNameAttribute() }}</h3>
+                    <img class="card-blogger__image" src="{{ post.user.getAvatarThumb() | raw }}" alt="">
                 </div>
             </div>
         </div>
