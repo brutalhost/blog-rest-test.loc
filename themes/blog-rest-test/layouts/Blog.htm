@@ -8,4 +8,21 @@ sortOrder = "published_at desc"
 categoryPage = "blog/category"
 postPage = "blog/post"
 ==
-{% component 'blogPosts' %}
+{% put sidebar %}
+    {% partial 'sidebar' %}
+{% endput %}
+
+
+<!-- template -->
+
+{% partial '_head' %}
+<div class="section-one">
+    <div class="sectoin-one__container container  media">
+        {% component 'blogPosts' %}
+        {% placeholder sidebar %}
+    </div>
+</div>
+
+{% partial '_footer' %}
+
+<!-- end template -->

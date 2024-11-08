@@ -1,0 +1,79 @@
+{% set posts = __SELF__.posts %}
+
+
+
+<div class="card-container">
+    {% for post in posts %}
+
+        <div class="card">
+            {% for image in post.featured_images|slice(0,1) %}
+                <img class="card__image" src="{{image.path}}" alt="#">
+            {% endfor %}
+
+            <h3 class="card__heading">{{ post.title }}</h3>
+            <h2 class="card__title">Ea cum vide impetus deserunt</h2>
+            <p class="card__para">{{ post.summary | raw }}</p>
+            <hr>
+            <div class="card-learnmore">
+                <a href="{{ post.url }}">
+                    <h3 class="card__learnmore">Learn more></h3>
+                </a>
+
+                <div class="card-blogger">
+                    <h4 class="card-blogger__date">20 July 2019</h4>
+                    <h3 class="card-blogger__name">Cayla Brister</h3>
+                    <img class="card-blogger__image" src="img/cardbloggerimgedit.png" alt="">
+                </div>
+            </div>
+        </div>
+{% else %}
+    <span>{{ __SELF__.noPostsMessage }}</span>
+{% endfor %}
+
+
+
+{% if posts.lastPage > 1 %}
+    <div class="card__slider">
+        <ul class="card__slider-list">
+
+            {# Кнопка "Назад" #}
+            {% if posts.currentPage > 1 %}
+                <li class="card__slider-item">
+                    <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): (posts.currentPage-1) }) }}">
+                        <img src="img/arrowleft.png" alt="Previous">
+                    </a>
+                </li>
+            {% endif %}
+
+            {# Список страниц #}
+            {% for page in 1..posts.lastPage %}
+                <li class="card__slider-item {{ posts.currentPage == page ? 'card__slider-item--active' : '' }}">
+                    <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): page }) }}">{{ page }}</a>
+                </li>
+
+                {# Если страниц много, добавляем многоточие после 2-й страницы и перед последней #}
+                {% if page == 2 and posts.lastPage > 5 and posts.currentPage > 4 %}
+                    <li class="card__slider-item">...</li>
+                    {% set page = posts.currentPage > posts.lastPage - 3 ? posts.lastPage - 4 : posts.currentPage - 1 %}
+                {% elseif page == posts.currentPage + 1 and posts.currentPage < posts.lastPage - 3 %}
+                    <li class="card__slider-item">...</li>
+                    {% set page = posts.lastPage - 1 %}
+                {% endif %}
+            {% endfor %}
+
+            {# Кнопка "Вперед" #}
+            {% if posts.lastPage > posts.currentPage %}
+                <li class="card__slider-item">
+                    <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): (posts.currentPage+1) }) }}">
+                        <img src="img/arrowright.png" alt="Next">
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+{% endif %}
+
+
+
+</div>
