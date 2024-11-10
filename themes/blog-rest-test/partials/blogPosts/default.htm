@@ -31,47 +31,44 @@
 
 
 
-{% if posts.lastPage > 1 %}
-    <div class="card__slider">
-        <ul class="card__slider-list">
+    {% if posts.lastPage > 1 %}
+        <div class="card__slider">
+            <ul class="card__slider-list">
 
-            {# Кнопка "Назад" #}
-            {% if posts.currentPage > 1 %}
-                <li class="card__slider-item">
-                    <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): (posts.currentPage-1) }) }}">
-                        <img src="img/arrowleft.png" alt="Previous">
-                    </a>
-                </li>
-            {% endif %}
-
-            {# Список страниц #}
-            {% for page in 1..posts.lastPage %}
-                <li class="card__slider-item {{ posts.currentPage == page ? 'card__slider-item--active' : '' }}">
-                    <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): page }) }}">{{ page }}</a>
-                </li>
-
-                {# Если страниц много, добавляем многоточие после 2-й страницы и перед последней #}
-                {% if page == 2 and posts.lastPage > 5 and posts.currentPage > 4 %}
-                    <li class="card__slider-item">...</li>
-                    {% set page = posts.currentPage > posts.lastPage - 3 ? posts.lastPage - 4 : posts.currentPage - 1 %}
-                {% elseif page == posts.currentPage + 1 and posts.currentPage < posts.lastPage - 3 %}
-                    <li class="card__slider-item">...</li>
-                    {% set page = posts.lastPage - 1 %}
+                {# Кнопка "Назад" #}
+                {% if posts.currentPage > 1 %}
+                    <li class="card__slider-item">
+                        <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): (posts.currentPage-1) }) }}">
+                            <img src="img/arrowleft.png" alt="Previous">
+                        </a>
+                    </li>
                 {% endif %}
-            {% endfor %}
 
-            {# Кнопка "Вперед" #}
-            {% if posts.lastPage > posts.currentPage %}
-                <li class="card__slider-item">
-                    <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): (posts.currentPage+1) }) }}">
-                        <img src="img/arrowright.png" alt="Next">
-                    </a>
-                </li>
-            {% endif %}
+                {# Список страниц #}
+                {% for page in 1..posts.lastPage %}
+                    {# Добавляем кнопки для первой страницы, текущей страницы и последних страниц #}
+                    {% if page == 1 or page == posts.lastPage or (page >= posts.currentPage - 1 and page <= posts.currentPage + 1) %}
+                        <li class="card__slider-item {{ posts.currentPage == page ? 'card__slider-item--active' : '' }}">
+                            <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): page }) }}">{{ page }}</a>
+                        </li>
+                    {% elseif page == 2 or page == posts.lastPage - 1 %}
+                        <li class="card__slider-item">...</li>
+                    {% endif %}
+                {% endfor %}
 
-        </ul>
-    </div>
-{% endif %}
+                {# Кнопка "Вперед" #}
+                {% if posts.lastPage > posts.currentPage %}
+                    <li class="card__slider-item">
+                        <a href="{{ this.page.baseFileName | page({ (__SELF__.pageParam): (posts.currentPage+1) }) }}">
+                            <img src="img/arrowright.png" alt="Next">
+                        </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    {% endif %}
+
 
 
 
