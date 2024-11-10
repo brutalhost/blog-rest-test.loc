@@ -1,0 +1,25 @@
+{% set post = __SELF__.post %}
+<div class="card-container">
+        <div class="card">
+            {% for image in post.featured_images|slice(0,1) %}
+                <img class="card__image" src="{{image.path}}" alt="#">
+            {% endfor %}
+
+            <h3 class="card__heading">
+                {% if post.categories.count %}
+                    {% set categoryLinks = post.categories | map(c => "<a href=\"#{c.url}\">#{c.name}</a>") | join(', ') %}
+                    {{ categoryLinks | raw }}
+                {% endif %}
+            </h3>
+            <h2 class="card__title">{{ post.title }}</h2>
+            <p class="card__para">{{ post.content_html | raw }}</p>
+            <hr>
+            <div class="card-learnmore">
+                <div class="card-blogger">
+                    <h4 class="card-blogger__date">{{ post.published_at | date('j F Y') }}</h4>
+                    <h3 class="card-blogger__name">{{ post.user.getFullNameAttribute() }}</h3>
+                    <img class="card-blogger__image" src="{{ post.user.getAvatarThumb() | raw }}" alt="">
+                </div>
+            </div>
+        </div>
+</div>
