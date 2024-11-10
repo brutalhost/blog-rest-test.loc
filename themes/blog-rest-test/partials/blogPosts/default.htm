@@ -1,6 +1,5 @@
 {% set posts = __SELF__.posts %}
 
-
 <div class="card-container">
     {% for post in posts %}
 
@@ -9,8 +8,13 @@
                 <img class="card__image" src="{{image.path}}" alt="#">
             {% endfor %}
 
-            <h3 class="card__heading">{{ post.title }}</h3>
-            <h2 class="card__title">Ea cum vide impetus deserunt</h2>
+            <h3 class="card__heading">
+                {% if post.categories.count %}
+                    {% set categoryLinks = post.categories | map(c => "<a href=\"#{c.url}\">#{c.name}</a>") | join(', ') %}
+                    {{ categoryLinks | raw }}
+                {% endif %}
+            </h3>
+            <h2 class="card__title">{{ post.title }}</h2>
             <p class="card__para">{{ post.summary | raw }}</p>
             <hr>
             <div class="card-learnmore">
